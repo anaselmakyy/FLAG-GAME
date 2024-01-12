@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function App() {
   const [Data, setData] = useState([]);
-  const [main,setMain] = useState(true);
+  const [main, setMain] = useState(true);
   const [countryNumber, setNumber] = useState(0);
   const [otherCountryNumberse, settOther] = useState([]);
   const [searchedCountry, setSearchedCountry] = useState("");
@@ -15,7 +15,10 @@ export default function App() {
   const [currentCountry, setCurrentCountry] = useState("");
   const [score, setScore] = useState(0);
   const [end, setEnd] = useState(false);
+  const [typeChoosen, setType] = useState("");
+  const [textType,setTextType] = useState("")
   const link = "https://restcountries.com/v3.1/all";
+  const excludedIndices = [78, 243];
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -122,81 +125,80 @@ export default function App() {
   };
   return (
     <div className="App">
-      {
-        main && (
-          <>
-          {!isGameTrue && (
+      {main && (
         <>
-          {Data.length>=1 && (
-            <div className="text-center flex flex-col justify-center hid">
-              <div className="text-center flex flex-col justify-center items-center">
-                <img
-                  src={Data[countryNumber].flags.png}
-                  alt=""
-                  className="w-[85%] border-4 border-white rounded-md m-[10%] h-[220px] md:w-[50%] md:m-[5%] lg:w-[30%] lg:m-[2%] items-center"
-                />
-              </div>
+          {!isGameTrue && (
+            <>
+              {Data.length >= 1 && (
+                <div className="text-center flex flex-col justify-center hid">
+                  <div className="text-center flex flex-col justify-center items-center">
+                    <img
+                      src={Data[countryNumber].flags.png}
+                      alt=""
+                      className="w-[85%] border-4 border-white rounded-md m-[10%] h-[220px] md:w-[50%] md:h-[290px] md:m-[5%] lg:w-[30%] lg:m-[2%] items-center"
+                    />
+                  </div>
 
-              <div className="flex flex-col text-center">
-                <div className="mb-4">
-                  <h1 className="text-blue-500 text-2xl font-bold">
-                    COUNTRY :
-                  </h1>
-                  <h1 className="text-2xl font-bold text-white">
-                    {Data[countryNumber].name.common}
-                  </h1>
+                  <div className="flex flex-col text-center">
+                    <div className="mb-4">
+                      <h1 className="text-blue-500 text-2xl font-bold">
+                        COUNTRY :
+                      </h1>
+                      <h1 className="text-2xl font-bold text-white">
+                        {/* {console.log(Data.findIndex((x)=>x.name.common === "Israel"))} */}
+
+                        {Data[countryNumber].name.common}
+                      </h1>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="text-lg text-blue-500">CAPITAL :</h4>
+                      <h4 className="text-lg text-white">
+                        {Data[countryNumber].capital}
+                      </h4>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="text-lg text-blue-500">POPULATION :</h4>
+                      <p className="text-base text-white">
+                        {Data[countryNumber].population}
+                      </p>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="text-lg text-blue-500">REGION :</h4>
+                      <p className="text-base text-white">
+                        {Data[countryNumber].region}
+                      </p>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="text-lg text-blue-500">SUB REGION :</h4>
+                      <p className="text-base text-white">
+                        {Data[countryNumber].subregion}
+                      </p>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="text-lg text-blue-500">TIME ZONE :</h4>
+                      <p className="text-base text-white">
+                        {Data[countryNumber].timezones}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="items-center">
+                    <button
+                      onClick={nextCountry}
+                      className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] "
+                    >
+                      DISCOVER
+                    </button>
+                  </div>
                 </div>
-
-                <div className="mb-4">
-                  <h4 className="text-lg text-blue-500">CAPITAL :</h4>
-                  <h4 className="text-lg text-white">
-                    {Data[countryNumber].capital}
-                  </h4>
-                </div>
-
-                <div className="mb-4">
-                  <h4 className="text-lg text-blue-500">POPULATION :</h4>
-                  <p className="text-base text-white">
-                    {Data[countryNumber].population}
-                  </p>
-                </div>
-
-                <div className="mb-4">
-                  <h4 className="text-lg text-blue-500">REGION :</h4>
-                  <p className="text-base text-white">
-                    {Data[countryNumber].region}
-                  </p>
-                </div>
-
-                <div className="mb-4">
-                  <h4 className="text-lg text-blue-500">SUB REGION :</h4>
-                  <p className="text-base text-white">
-                    {Data[countryNumber].subregion}
-                  </p>
-                </div>
-
-                <div className="mb-4">
-                  <h4 className="text-lg text-blue-500">TIME ZONE :</h4>
-                  <p className="text-base text-white">
-                    {Data[countryNumber].timezones}
-                  </p>
-                </div>
-              </div>
-
-              <div className="items-center">
-                <button
-                  onClick={nextCountry}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] "
-                >
-                  DISCOVER
-                </button>
-              </div>
-            </div>
+              )}
+            </>
           )}
-          </>
-        )
-      }
-      
 
           <div>
             <div className="mt-[45%] sm:mt-[35%] md:mt-[24%] hid">
@@ -212,7 +214,7 @@ export default function App() {
               <div className="flex flex-col justify-center items-center">
                 <button
                   onClick={searchedcountryfunc}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
+                  className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
                 >
                   SEARCH
                 </button>
@@ -283,9 +285,9 @@ export default function App() {
                 <button
                   onClick={() => {
                     setGame(true);
-                    setMain(false)
+                    setMain(false);
                   }}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
+                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
                 >
                   TEST YOURSELF
                 </button>
@@ -297,30 +299,69 @@ export default function App() {
       {isGameTrue && (
         <>
           {!startGame && (
-            <div className="mt-[5%]">
+            <div className="mt-[15%] lg:mt-[3%]">
               <h1 className="text-white text-2xl font-bold">
                 You Want To Test Yourself ?
+                <br /> Choose You're type :
               </h1>
-              <button
-                onClick={() => {
-                  setStart(true);
-                  generateRandomNumbers();
-                }}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
-              >
-                Start
-              </button>
+              <div className="flex flex-col justify-center items-center">
+                <div className="image-container mt-[25%] mb-[15%] md:mt-[3%] md:mb-[5%]">
+                  <img
+                    id="pic1"
+                    src="./flags.jpg"
+                    onClick={() => {
+                      setType("flags");
+                      setTextType("Flag");
+                      setStart(true);
+                      generateRandomNumbers();
+                    }}
+                    alt="flags"
+                    className="zoom-out w-[60%]   rounded-xl cursor-pointer lg:w-[20%] md:w-[40%]"
+                  />
+                  <div className="image-text" id="text1">
+                    Play With Flags !
+                  </div>
+                </div>
+
+                <div className="image-container">
+                  <img
+                    id="pic2"
+                    src="./capital.jpg"
+                    onClick={() => {
+                      setType("capital");
+                      setTextType("Capital");
+                      setStart(true);
+                      generateRandomNumbers();
+                    }}
+                    alt="capitals"
+                    className="zoom-out w-[60%] rounded-xl cursor-pointer lg:w-[20%]  md:w-[40%]"
+                  />
+                  <div className="image-text" id="text2">
+                    Play With Capitals !
+                  </div>
+                </div>
+              </div>
             </div>
           )}
-          {startGame && !end &&(
+          {startGame && !end && (
             <>
-              <div className="mt-[10%] flex flex-col items-center">
+              <div className="mt-[10%] flex flex-col items-center md:mt-[2%]">
                 <h1 className="text-white text-2xl font-bold text-center">
-                  This is the capital of any country ?
+                  This is the {textType} of any country ?
                 </h1>
-                <h1 className=" mt-[5%] text-2xl  font-bold bg-white  text-blue-500 px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:ml-[0%]">
-                  {Data[currentCountry].capital}
-                </h1>
+
+                {typeChoosen === "capital" && (
+                  <h1 className=" mt-[5%] text-2xl  font-bold bg-white  text-blue-500 px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:ml-[0%]">
+                    {Data[currentCountry].capital}
+                  </h1>
+                )}
+                {typeChoosen === "flags" && (
+                  <img 
+                  src={Data[currentCountry].flags.png}
+                  className=" mt-[5%]  px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:ml-[0%]">
+                    
+                  </img>
+                )}
               </div>
 
               <div className=" mt-[2%] flex flex-col items-center md:flex-row md:justify-around">
@@ -335,56 +376,58 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              <div className=" mt-[2%] flex flex-col items-center md:flex-row md:justify-around">
-                <h1 className="text-white text-2xl font-bold text-center">
-                  Your Score :{" "}
+              <div className=" mt-[2%] flex flex-col items-center md:flex-row md:justify-around ">
+                <h1 className="text-white text-2xl font-bold text-center ">
+                  Your Score :
                 </h1>
-                <h1 className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                <h1 className="bg-blue-500 text-white px-4 py-2 rounded-md mt-[3%] md:mt-[0%]">
                   {score}
                 </h1>
               </div>
               <button
                 onClick={() => {
-                    window.location.reload()
+                  window.location.reload();
                 }}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
+                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
               >
                 End
               </button>
             </>
           )}
           {end && (
-          <>
-          <div className="items-center mb-[50%]">
-          <h1 className="text-white text-2xl font-bold text-center">You want to Try again ?</h1>
-            <div className="flex flex-col md:flex-col items-center">
-            <button
-                onClick={() => {
-                  setEnd(false);
-                  setGame(true);
-                  setMain(false)
-                  // setStart(true);
-                  generateNumber();
-                }}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[5%]"
-              >
-                Play Again
-              </button>
-            <h1 className="text-white text-2xl font-bold text-center">OR :</h1>
+            <>
+              <div className="items-center mt-[50%] md:mt-[17%]">
+                <h1 className="text-white text-2xl font-bold text-center">
+                  You want to Try again ?
+                </h1>
+                <div className="flex flex-col md:flex-col items-center">
+                  <button
+                    onClick={() => {
+                      setEnd(false);
+                      setGame(true);
+                      setMain(false);
+                      // setStart(true);
+                      generateNumber();
+                    }}
+                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[5%]"
+                  >
+                    Play Again
+                  </button>
+                  <h1 className="text-white text-2xl font-bold text-center">
+                    OR :
+                  </h1>
 
-              <button
-                onClick={() => {
-                    window.location.reload()
-                }}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
-              >
-                End
-              </button>
-            </div>
-
-          </div>
-          </>
-          
+                  <button
+                    onClick={() => {
+                      window.location.reload();
+                    }}
+                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[20%]"
+                  >
+                    End
+                  </button>
+                </div>
+              </div>
+            </>
           )}
         </>
       )}
