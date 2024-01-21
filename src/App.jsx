@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+
 import "./App.css";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -16,9 +16,11 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [end, setEnd] = useState(false);
   const [typeChoosen, setType] = useState("");
-  const [textType,setTextType] = useState("")
+  const [textType,setTextType] = useState("");
+  const [hearts,setHearts] = useState("❤️❤️❤️❤️❤️")
+  const [falseAnswers,setAnswers] = useState(0);
   const link = "https://restcountries.com/v3.1/all";
-  const excludedIndices = [78, 243];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,7 +38,7 @@ export default function App() {
     if (Data.length >= 1) {
       generateNumber();
     }
-  }, [Data]);
+  },[Data]);
 
   const generateNumber = () => {
     setNumber((prevNumber) => {
@@ -53,23 +55,22 @@ export default function App() {
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      // console.log(entry);
+
       if (entry.isIntersecting) {
-        // console.log(1);
-        // entry.target.classList.remove('hid')
+
         entry.target.classList.add("show");
-        // observer.unobserve(entry.target)
+
       } else {
-        // console.log(0);
+
         entry.target.classList.remove("show");
-        // entry.target.classList.add('hid')
+
       }
     });
   });
   const hiddenElements = document.querySelectorAll(".hid");
   hiddenElements.forEach((el) => {
     observer.observe(el);
-    // console.log(el);
+
   });
   const searchedcountryfunc = () => {
     const foundCountry = Data.find(
@@ -79,7 +80,7 @@ export default function App() {
     if (foundCountry) {
       setSearchedCountry(foundCountry);
     } else {
-      // If the country is not found, you might want to handle this case
+
       setSearchedCountry(null);
     }
   };
@@ -102,25 +103,37 @@ export default function App() {
     const value = e.target.value;
     if (Data[currentCountry].name.common === value) {
       setScore(score + 1);
-      // alert("true")
+
       generateRandomNumbers();
-      if (score == 4) {
+      Swal.fire("True")
+      if (score === 4) {
         Swal.fire("hmmm you're good");
       }
-      if (score == 9) {
+      if (score === 9) {
         Swal.fire("Great Job...");
       }
-      if (score == 9) {
+      if (score === 9) {
         Swal.fire("So You're Expert at that");
       }
-      if (score == 19) {
+      if (score === 19) {
         Swal.fire("YOU'RE A CHAMPIOOON");
         setStart(true);
         setEnd(true);
         setScore(0);
       }
+
     } else {
-      Swal.fire("false");
+      Swal.fire("false   -❤️");
+      setAnswers(falseAnswers+1);
+      setHearts(hearts.slice(0, -2))
+      if(falseAnswers===4){
+        Swal.fire("Game Over");
+        setStart(true);
+        setEnd(true);
+        setScore(0);
+        console.log("gg");
+      }
+
     }
   };
   return (
@@ -145,7 +158,6 @@ export default function App() {
                         COUNTRY :
                       </h1>
                       <h1 className="text-2xl font-bold text-white">
-                        {/* {console.log(Data.findIndex((x)=>x.name.common === "Israel"))} */}
 
                         {Data[countryNumber].name.common}
                       </h1>
@@ -345,20 +357,23 @@ export default function App() {
           )}
           {startGame && !end && (
             <>
-              <div className="mt-[10%] flex flex-col items-center md:mt-[2%]">
-                <h1 className="text-white text-2xl font-bold text-center">
+              <div className="mt-[5%]  flex flex-col items-center md:mt-[2%]">
+                
+              <h1  className="text-white text-2xl font-bold text-center bg-white p-[2%] rounded-xl md:p-[0.5%]">{hearts}</h1>
+                <h1 className="mt-[5%] md:mt-[2%] text-white text-2xl font-bold text-center">
                   This is the {textType} of any country ?
                 </h1>
 
                 {typeChoosen === "capital" && (
-                  <h1 className=" mt-[5%] text-2xl  font-bold bg-white  text-blue-500 px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:ml-[0%]">
+                  <h1 className=" mt-[5%] md:mt-[2%] text-2xl  font-bold bg-white  text-blue-500 px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:mb-[4%] md:ml-[0%]">
                     {Data[currentCountry].capital}
                   </h1>
                 )}
                 {typeChoosen === "flags" && (
                   <img 
                   src={Data[currentCountry].flags.png}
-                  className=" mt-[5%]  px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:ml-[0%]">
+                  className=" mt-[5%] md:mt-[2%]  px-4 py-2 rounded-md  w-[40%] md:w-[30%] lg:w-[20%] mb-[8%] md:mb-[4%] md:ml-[0%]"
+                  alt="Flag">
                     
                   </img>
                 )}
@@ -406,7 +421,9 @@ export default function App() {
                       setEnd(false);
                       setGame(true);
                       setMain(false);
-                      // setStart(true);
+                      setHearts("❤️❤️❤️❤️❤️")
+                      setAnswers(0);
+
                       generateNumber();
                     }}
                     className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md w-[40%] md:w-[30%] lg:w-[20%] mb-[5%]"
